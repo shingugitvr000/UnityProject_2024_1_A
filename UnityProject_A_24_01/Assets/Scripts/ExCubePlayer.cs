@@ -34,10 +34,22 @@ public class ExCubePlayer : MonoBehaviour
         TextUI.text = Point.ToString();                     //UI에 점수 표시를 한다. 
     }
 
-    void OnCollisionEnter(Collision collision)          //충돌이 되었을 때
+    void OnCollisionEnter(Collision collision)          //충돌이 되었을 때 (물리적 충돌)
     {
-        //Debug.Log(collision.gameObject.name);
-        Point = 0;
-        gameObject.transform.position = Vector3.zero;   //플레이어를 원점으로 이동 시킨다. 
+        Debug.Log(collision.gameObject.tag);
+        if(collision.gameObject.tag == "Pipe")          //설정한 Tag가 Pipe 일때 동작 한다.
+        {
+            Point = 0;
+            gameObject.transform.position = Vector3.zero;   //플레이어를 원점으로 이동 시킨다. 
+        }
+      
+    }
+    void OnTriggerEnter(Collider other)                 //Trigger 통한 충돌
+    {
+        if(other.gameObject.tag == "Items")             //설정한 Tag로 Items와 충돌 했을 때
+        {
+            Point += 10;                                //point 10점을 올려준다.
+            Destroy(other.gameObject);                  //해당 오브젝트를 파괴 시켜준다.
+        }
     }
 }
